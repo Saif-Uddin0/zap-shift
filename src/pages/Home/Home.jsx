@@ -4,6 +4,7 @@ import Banner from '../../Shared/Home/Banner';
 import HowItWorks from '../../Shared/Home/HowItWorks';
 import OurService from '../../Shared/Home/OurService';
 import SalesTeam from '../../Shared/Home/SalesTeam';
+import FeatureSection from '../../Shared/Home/FeatureSection';
 
 const Home = () => {
     return (
@@ -19,6 +20,9 @@ const Home = () => {
             </div>
             <div>
                 <SalesTeam></SalesTeam>
+            </div>
+            <div>
+                <FeatureSection></FeatureSection>
             </div>
         </div>
     );

@@ -28,7 +28,7 @@ export default function SalesTeam() {
                 key={i}
                 src={logo}
                 alt="brand-logo"
-                className="h-10 w-auto opacity-80 hover:opacity-100 transition cursor-pointer"
+                className="h-6 w-auto opacity-80 hover:opacity-100 transition cursor-pointer"
               />
             ))}
             {logos.map((logo, i) => (
@@ -36,11 +36,13 @@ export default function SalesTeam() {
                 key={"repeat" + i}
                 src={logo}
                 alt="brand-logo"
-                className="h-8 w-auto opacity-80 hover:opacity-100 transition cursor-pointer"
+                className="h-6 w-auto opacity-80 hover:opacity-100 transition cursor-pointer"
               />
             ))}
           </div>
         </marquee>
+      </div>
+      <div className="bg-base-100 border-b  mt-10 border-dashed">
       </div>
     </div>
   );
