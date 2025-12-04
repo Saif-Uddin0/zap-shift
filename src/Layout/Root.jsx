@@ -5,15 +5,23 @@ import Footer from '../components/Footer/Footer';
 
 const Root = () => {
 
-  
-    return (
-        <div className='bg-[#EAECED]'>
-            <Navbar />
-            <Outlet />
-            <Footer />
 
-    
-        
+    return (
+        <div className='bg-[#EAECED] '>
+            <header>
+                <Navbar />
+            </header>
+
+            <main>
+                <Outlet />
+            </main>
+
+            <footer className='pb-10'>
+                <Footer />
+            </footer>
+
+
+
         </div>
     );
 };

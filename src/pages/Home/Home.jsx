@@ -5,6 +5,9 @@ import HowItWorks from '../../Shared/Home/HowItWorks';
 import OurService from '../../Shared/Home/OurService';
 import SalesTeam from '../../Shared/Home/SalesTeam';
 import FeatureSection from '../../Shared/Home/FeatureSection';
+import PrioritySection from '../../Shared/Home/PioritySection';
+import CustomerReview from '../../Shared/Home/CustomerReview';
+import FAQ from '../../Shared/Home/FAQ';
 
 const Home = () => {
     return (
@@ -23,6 +26,15 @@ const Home = () => {
             </div>
             <div>
                 <FeatureSection></FeatureSection>
+            </div>
+            <div>
+                <PrioritySection></PrioritySection>
+            </div>
+            <div>
+                <CustomerReview></CustomerReview>
+            </div>
+            <div>
+                <FAQ></FAQ>
             </div>
         </div>
     );
