@@ -1,19 +1,33 @@
 import React from "react";
-import bannerImg from "../../assets/male courier.png"; // 
+import { Typewriter } from "react-simple-typewriter";
+import bannerImg from "../../assets/male courier.png";
 
 const Banner = () => {
     return (
         <div className="bg-base-100 mt-15 container mx-auto rounded-2xl">
-            <section className=" flex flex-col lg:flex-row items-center justify-between  p-10 lg:px-15 ">
+            <section className=" flex flex-col lg:flex-row items-center justify-between p-10 lg:px-15 ">
 
                 {/* Left Content */}
                 <div className="flex flex-col gap-5 max-w-xl">
                     <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-primary">
-                        We Make Sure Your <br /><span className="text-accent">Parcel Arrives</span> On Time <br /> – No Fuss.
+                        We Make Sure Your <br />
+                        <span className="text-accent">
+                            <Typewriter
+                                words={["Parcel Arrives", "Delivery is Fast", "Service is Hassle-Free"]}
+                                loop={true}
+                                cursor
+                                cursorStyle="|"
+                                typeSpeed={90}
+                                deleteSpeed={60}
+                                delaySpeed={1500}
+                            />
+                        </span>
+                        <br /> On Time — No Fuss.
                     </h1>
 
                     <p className="text-primary text-sm">
-                        Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal <br /> packages to business shipments — we deliver on time, every time.
+                        Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. From personal <br /> 
+                        packages to business shipments — we deliver on time, every time.
                     </p>
 
                     <div className="flex gap-3 mt-2">

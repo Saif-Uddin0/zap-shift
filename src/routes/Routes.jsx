@@ -3,6 +3,12 @@ import { createBrowserRouter } from "react-router-dom";
 import ErrorPage from '../pages/Error/ErrorPage';
 import Home from '../pages/Home/Home';
 import Root from '../Layout/Root';
+import SignIn from '../pages/SignIn/SignIn';
+import SignUp from '../pages/SignUp/SignUp';
+import AboutUs from '../pages/AboutUS/AboutUs';
+import BeaRider from '../pages/Be-a-Rider/BeaRider';
+import Coverage from '../pages/Coverage/Coverage';
+import SendParcel from '../pages/SendParcel/SendParcel';
 
 
 
@@ -17,6 +23,36 @@ export const router = createBrowserRouter([
         index: true,
         Component: Home,
       },
+      {
+        path: '/about',
+        element:<AboutUs></AboutUs>
+      },
+      {
+        path: '/berider',
+        element:<BeaRider></BeaRider>
+      },
+      {
+        path: '/coverage',
+        element:<Coverage></Coverage>
+      },
+      {
+        path: '/send-parcel',
+        element:<SendParcel></SendParcel>
+      },
     ]
   },
+  {
+    path: '/auth',
+    errorElement: <ErrorPage></ErrorPage>,
+    children:[
+      {
+        path:'/auth/signin',
+        element:<SignIn></SignIn>
+      },
+      {
+        path:'/auth/signup',
+        element:<SignUp></SignUp>
+      },
+    ]
+  }
 ]);

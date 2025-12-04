@@ -8,7 +8,7 @@ const Root = () => {
 
     return (
         <div className='bg-[#EAECED] '>
-            <header>
+            <header className='sticky top-5 h-fit z-50'>
                 <Navbar />
             </header>
 
