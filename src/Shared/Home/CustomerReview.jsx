@@ -1,6 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+import { Pagination, Navigation, Autoplay } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -52,10 +52,14 @@ export default function CustomerReview() {
         loop={true}
         navigation={true}
         pagination={{ clickable: true }}
+        initialSlide={3}
+        slidesPerView={3}
         centeredSlides={true}
-        initialSlide={1}
         spaceBetween={20}
-        modules={[Pagination, Navigation]}
+        autoplay={{
+          delay: 2000,disableOnInteraction: false,
+        }}
+        modules={[Pagination, Navigation ,Autoplay]}
         breakpoints={{
           0: { slidesPerView: 1 },       
           640: { slidesPerView: 1.2 },

@@ -21,14 +21,14 @@ export default function SalesTeam() {
       </div>
 
       <div className="w-full overflow-hidden py-3 mt-10">
-        <marquee scrollamount="7" direction="left">
+        <marquee scrollamount="12" direction="left" loop='0' pauseOnHover='true'>
           <div className="flex items-center gap-20">
             {logos.map((logo, i) => (
               <img
                 key={i}
                 src={logo}
                 alt="brand-logo"
-                className="h-6 w-auto opacity-80 hover:opacity-100 transition cursor-pointer"
+                className="h-6 w-auto  hover:scale-105 transition cursor-pointer"
               />
             ))}
             {logos.map((logo, i) => (
@@ -36,13 +36,29 @@ export default function SalesTeam() {
                 key={"repeat" + i}
                 src={logo}
                 alt="brand-logo"
-                className="h-6 w-auto opacity-80 hover:opacity-100 transition cursor-pointer"
+                className="h-6 w-auto  hover:scale-105 transition cursor-pointer"
+              />
+            ))}
+            {logos.map((logo, i) => (
+              <img
+                key={"repeat" + i}
+                src={logo}
+                alt="brand-logo"
+                className="h-6 w-auto  hover:scale-105 transition cursor-pointer"
+              />
+            ))}
+            {logos.map((logo, i) => (
+              <img
+                key={"repeat" + i}
+                src={logo}
+                alt="brand-logo"
+                className="h-6 w-auto  hover:scale-105 transition cursor-pointer"
               />
             ))}
           </div>
         </marquee>
       </div>
-      <div className="bg-base-100 border-b  mt-10 border-dashed">
+      <div className="bg-base-100 border-b border-gray-400 mt-10 border-dashed">
       </div>
     </div>
   );

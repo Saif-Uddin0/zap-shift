@@ -5,19 +5,26 @@ import sideImg from "../../assets/Login-Banner.png";
 
 const SignIn = () => {
     return (
-        <div className="bg-gradient-to-r from-white to-[#F7FAE7] min-h-screen flex items-center justify-center ">
+        <div className="bg-gradient-to-r from-white to-[#F7FAE7] min-h-screen flex items-center justify-center">
             <div className="bg-white rounded-3xl shadow-lg w-full max-w-5xl grid grid-cols-1 md:grid-cols-2">
 
                 {/* Left */}
                 <div className="p-10">
-                    <img src={logo} alt="Logo" className="h-10 mb-5" />
+                    <Link to={'/'}><img src={logo} alt="Logo" className="h-10 mb-5" /></Link>
 
                     <h2 className="text-3xl font-bold text-primary mb-2">Welcome Back</h2>
                     <p className="text-sm text-gray-600 mb-5">Login to continue</p>
 
                     <form className="flex flex-col gap-4">
-                        <input type="email" placeholder="Email" className="border px-4 py-2 rounded-lg focus:outline-primary" />
-                        <input type="password" placeholder="Password" className="border px-4 py-2 rounded-lg focus:outline-primary" />
+                        {/* email */}
+                        <input type="email"
+                            placeholder="Email"
+                            className="border px-4 py-2 rounded-lg focus:outline-primary" />
+                            
+                        {/* password */}
+                        <input type="password"
+                            placeholder="Password"
+                            className="border px-4 py-2 rounded-lg focus:outline-primary" />
 
                         <div className="flex justify-between text-sm text-primary">
                             <Link to="/forgot-password">Forgot Password?</Link>

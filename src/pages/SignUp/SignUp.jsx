@@ -10,19 +10,29 @@ const SignUp = () => {
 
                 {/* Left */}
                 <div className="p-10">
-                    <img src={logo} alt="Logo" className="h-10 mb-5" />
+                    <Link to={'/'}><img src={logo} alt="Logo" className="h-10 mb-5" /></Link>
 
                     <h2 className="text-3xl font-bold text-primary mb-2">Create an Account</h2>
                     <p className="text-sm text-gray-600 mb-5">Register with ZapShift</p>
 
                     <form className="flex flex-col gap-4">
-                        <input type="text" placeholder="Name" className="border px-4 py-2 rounded-lg focus:outline-primary" />
-                        <input type="email" placeholder="Email" className="border px-4 py-2 rounded-lg focus:outline-primary" />
-                        <input type="password" placeholder="Password" className="border px-4 py-2 rounded-lg focus:outline-primary" />
+                        {/* name */}
+                        <input type="text"
+                            placeholder="Name"
+                            className="border px-4 py-2 rounded-lg focus:outline-primary" />
+
+                        {/* email */}
+                        <input type="email"
+                            placeholder="Email"
+                            className="border px-4 py-2 rounded-lg focus:outline-primary" />
+                        {/* password */}
+                        <input type="password"
+                            placeholder="Password"
+                            className="border px-4 py-2 rounded-lg focus:outline-primary" />
 
                         <button className="bg-secondary text-base-300 font-semibold py-2 rounded-lg hover:bg-green-400 transition">
                             Register
-                        </button> 
+                        </button>
                     </form>
 
                     <p className="text-center text-sm mt-4">

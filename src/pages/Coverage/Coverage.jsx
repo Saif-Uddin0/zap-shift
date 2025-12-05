@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Search } from "lucide-react";
-import map from '../../assets/Map.png'
+import 'leaflet/dist/leaflet.css'
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { useLoaderData } from "react-router-dom";
 
 export default function Coverage() {
+  const mapRef = useRef(null)
+  const data = useLoaderData()
+  console.log(data);
+
+  const position = [23.6850, 90.3563]
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const location = e.target.location.value;
+    const district = data.find(d => d.district.toLowerCase().includes(location.toLowerCase()))
+    if (district) {
+      const coord = [district.latitude, district.longitude];
+      // go to the location
+      mapRef.current.flyTo(coord ,14)
+    }
+  }
   return (
     <section className="bg-gray-50 container mx-auto py-12 px-4 rounded-2xl shadow-sm my-20">
       <div className=" text-center">
@@ -13,17 +30,20 @@ export default function Coverage() {
 
         {/* Search Bar */}
         <div className="flex items-center justify-center gap-2 mb-8">
-          <div className="relative w-full max-w-md">
+
+          <form onSubmit={handleSearch} className="relative w-full max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             <input
               type="text"
+              name="location"
               placeholder="Search here"
               className="w-full pl-10 pr-24 py-2 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-base-200"
             />
             <button className="absolute right-1 top-1/2 -translate-y-1/2 bg-secondary hover:bg-green-400 text-black px-5 py-1.5 rounded-full transition-all">
               Search
             </button>
-          </div>
+          </form>
+
         </div>
 
         {/* Description */}
@@ -32,12 +52,25 @@ export default function Coverage() {
         </p>
 
         {/* Map */}
-        <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
-          <img
-            src={map}
-            alt="Bangladesh map"
-            className="w-full h-72 object-cover"
-          />
+        <div className="w-full h-[650px] overflow-hidden rounded-xl border border-gray-200 shadow-sm">
+          <MapContainer
+          ref={mapRef}
+            center={position}
+            zoom={7}
+            scrollWheelZoom={false}
+            className="h-[650px]">
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {
+              data.map((center, index) => <Marker key={index} position={[center.latitude, center.longitude]}>
+                <Popup>
+                  <b className="font-bold">{center.district}</b> <br /> <b>Service Area</b> :{center.covered_area.join(' , ')}
+                </Popup>
+              </Marker>)
+            }
+          </MapContainer>
         </div>
       </div>
     </section>
