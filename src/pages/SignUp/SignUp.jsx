@@ -11,10 +11,12 @@ const SignUp = () => {
 
     const handleSignUp =(data)=>{
         console.log(data);
+        const profileImg = data.photo[0];
         registerUser(data.email , data.password )
         .then(result =>{
             console.log(result);
-            
+            const formData = new FormData();
+            formData.append('photo', profileImg)
         })
         .catch(err =>{
             console.log(err);
@@ -53,6 +55,12 @@ const handleGoogleSignIn = () =>{
                             {...register('name' , {required: true}) }
                             className="border px-4 py-2 rounded-lg focus:outline-primary" />
                             {errors.name?.type=='required' && <p className="text-red-400 text-sm">Name is required..</p>}
+                        {/* photo */}
+                        <input type="file"
+                            placeholder="Name"
+                            {...register('photo' , {required: true}) }
+                            className="border border-base-300 file-input  rounded-lg" />
+                            {errors.photo?.type=='required' && <p className="text-red-400 text-sm">required the Photo</p>}
 
                         {/* email */}
                         <input type="email"
