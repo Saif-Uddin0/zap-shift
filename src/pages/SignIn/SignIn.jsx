@@ -1,39 +1,44 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/Logo (2).png";
 import sideImg from "../../assets/Login-Banner.png";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignIn = () => {
-    const  { signInUser ,googleSignIn} = useAuth()
-    const {register, handleSubmit , formState: {errors}} = useForm();
+    const [showpass, setShowPass] = useState(false);
+    const { signInUser, googleSignIn } = useAuth()
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const location = useLocation();
+    const navigate = useNavigate();
 
+    const handleLogin = (data) => {
+        console.log(data);
+        signInUser(data.email, data.password)
+            .then(result => {
+                console.log(result);
+                navigate(location?.state || '/')
 
-const handleLogin =(data)=>{
-    console.log(data);
-    signInUser(data.email , data.password)
-    .then(result =>{
-        console.log(result);
-        
-    })
-    .catch(err =>{
-        console.log(err);
-        
-    })
-    
-}
-const handleGoogleSignIn = () =>{
-    googleSignIn()
-    .then(res =>{
-        console.log(res);
-        
-    })
-    .catch(err =>{
-        console.log(err);
-        
-    })
-}
+            })
+            .catch(err => {
+                console.log(err);
+
+            })
+
+    }
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+            .then(res => {
+                console.log(res);
+                navigate(location?.state || '/')
+
+            })
+            .catch(err => {
+                console.log(err);
+
+            })
+    }
 
 
     return (
@@ -50,17 +55,26 @@ const handleGoogleSignIn = () =>{
                     <form onSubmit={handleSubmit(handleLogin)} className="flex flex-col gap-4">
                         {/* email */}
                         <input type="email"
-                        {...register('email' , {require: true})}
+                            {...register('email', { require: true })}
                             placeholder="Email"
                             className="border px-4 py-2 rounded-lg focus:outline-primary" />
-                            { errors.email?.type === 'required' && <p className="text-red-400 text-sm">Email is required</p>}
-                            
+                        {errors.email?.type === 'required' && <p className="text-red-400 text-sm">Email is required</p>}
+
                         {/* password */}
-                        <input type="password"
-                            {...register('password', {required: true})}
-                            placeholder="Password"
-                            className="border px-4 py-2 rounded-lg focus:outline-primary" />
-                            { errors.password?.type === 'required' && <p className="text-red-400 text-sm">Password is required</p>}
+                        <div className="w-full relative">
+                            <input type={showpass? 'text' : 'passwordgit '}
+                                {...register('password', { required: true })}
+                                placeholder="Password"
+                                className="border px-4 py-2 rounded-lg focus:outline-primary w-full pr-10" />
+                            {errors.password?.type === 'required' && <p className="text-red-400 text-sm">Password is required</p>}
+                            <span
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 cursor-pointer"
+                                onClick={() => setShowPass(!showpass)}
+                            >
+                                {showpass ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+
 
                         <div className="flex justify-between text-sm text-primary">
                             <Link to="/forgot-password">Forgot Password?</Link>
@@ -72,7 +86,7 @@ const handleGoogleSignIn = () =>{
                     </form>
 
                     <p className="text-center text-sm mt-4">
-                        Don’t have an account? <Link to="/auth/signup" className="text-primary underline">Sign Up</Link>
+                        Don’t have an account? <Link state={location?.state} to="/auth/signup" className="text-primary underline">Sign Up</Link>
                     </p>
 
                     <div className="mt-4">

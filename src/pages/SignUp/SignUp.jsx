@@ -1,41 +1,71 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/Logo (2).png";
 import sideImg from "../../assets/Login-Banner.png";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
+import axios from "axios";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignUp = () => {
-    const {registerUser , googleSignIn} = useAuth()
-    const {register,handleSubmit ,formState: {errors}} = useForm();
+    const [showpass, setShowPass] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { registerUser, googleSignIn, updateUserProfile } = useAuth()
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const handleSignUp =(data)=>{
+    const handleSignUp = (data) => {
         console.log(data);
         const profileImg = data.photo[0];
-        registerUser(data.email , data.password )
-        .then(result =>{
-            console.log(result);
-            const formData = new FormData();
-            formData.append('photo', profileImg)
-        })
-        .catch(err =>{
-            console.log(err);
-            
-        })
-        
+        registerUser(data.email, data.password)
+            .then(result => {
+                console.log(result);
+
+                // 1. store the img in form Data
+                const formData = new FormData();
+                formData.append('image', profileImg)
+
+                // 2.sent the photo to store and get the url
+                axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host}`, formData)
+                    .then(res => {
+                        console.log('after img upload', res.data.data.url);
+
+
+                        // update profile to firebase
+                        const userProfile = {
+                            displayName: data.name,
+                            photoURL: res.data.data.url
+                        }
+                        updateUserProfile(userProfile)
+                            .then(() => {
+                                console.log('user profile updated');
+                                navigate(location?.state || '/')
+
+                            })
+                            .catch(err => {
+                                console.log(err);
+
+                            })
+                    })
+            })
+            .catch(err => {
+                console.log(err);
+
+            })
+
     }
 
-const handleGoogleSignIn = () =>{
-    googleSignIn()
-    .then(res =>{
-        console.log(res);
-        
-    })
-    .catch(err =>{
-        console.log(err);
-        
-    })
-}
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+            .then(res => {
+                console.log(res);
+                navigate(location?.state || '/')
+            })
+            .catch(err => {
+                console.log(err);
+
+            })
+    }
 
     return (
         <div className=" bg-gradient-to-r from-white to-[#F7FAE7] min-h-screen flex items-center justify-center bg-base-200">
@@ -52,32 +82,43 @@ const handleGoogleSignIn = () =>{
                         {/* name */}
                         <input type="text"
                             placeholder="Name"
-                            {...register('name' , {required: true}) }
+                            {...register('name', { required: true })}
                             className="border px-4 py-2 rounded-lg focus:outline-primary" />
-                            {errors.name?.type=='required' && <p className="text-red-400 text-sm">Name is required..</p>}
+                        {errors.name?.type == 'required' && <p className="text-red-400 text-sm">Name is required..</p>}
                         {/* photo */}
                         <input type="file"
                             placeholder="Name"
-                            {...register('photo' , {required: true}) }
-                            className="border border-base-300 file-input  rounded-lg" />
-                            {errors.photo?.type=='required' && <p className="text-red-400 text-sm">required the Photo</p>}
+                            {...register('photo', { required: true })}
+                            className="border border-base-300 file-input  rounded-lg w-full" />
+                        {errors.photo?.type == 'required' && <p className="text-red-400 text-sm">required the Photo</p>}
 
                         {/* email */}
                         <input type="email"
-                        {...register('email', {required: true})}
+                            {...register('email', { required: true })}
                             placeholder="Email"
                             className="border px-4 py-2 rounded-lg focus:outline-primary" />
-                            {errors.email?.type=='required' && <p className="text-red-400 text-sm">Email is required..</p>}
+                        {errors.email?.type == 'required' && <p className="text-red-400 text-sm">Email is required..</p>}
                         {/* password */}
-                        <input type="password"
-                        {...register('password' , {required: true , minLength:6 ,pattern:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$/})}
-                            placeholder="Password"
-                            className="border px-4 py-2 rounded-lg focus:outline-primary" />
-                            {errors.password?.type=='required' && <p className="text-red-400 text-sm">Password is required..</p>}
-                            {errors.password?.type=='minLength' && <p className="text-red-400 text-sm">Password must be 6 character or longer..</p>}
+                        <div className="relative w-full">
+
+                            <input type={showpass? 'text' : 'password'}
+                                {...register('password', { required: true, minLength: 6, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$/ })}
+                                placeholder="Password"
+                                className="border px-4 py-2 rounded-lg focus:outline-primary w-full pr-10" />
+                            {errors.password?.type == 'required' && <p className="text-red-400 text-sm">Password is required..</p>}
+                            {errors.password?.type == 'minLength' && <p className="text-red-400 text-sm">Password must be 6 character or longer..</p>}
                             {
                                 errors.password?.type === 'pattern' && <p className="text-red-400 text-sm">Ensures at least one lowercase, one uppercase, and one special character.</p>
                             }
+
+                            <span
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 cursor-pointer"
+                                onClick={() => setShowPass(!showpass)}
+                            >
+                                {showpass ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+
 
                         <button type="submit" className="bg-secondary text-base-300 font-semibold py-2 rounded-lg hover:bg-green-400 transition">
                             Register
@@ -85,7 +126,7 @@ const handleGoogleSignIn = () =>{
                     </form>
 
                     <p className="text-center text-sm mt-4">
-                        Already have an account? <Link to="/auth/signin" className="text-primary underline">Login</Link>
+                        Already have an account? <Link state={location?.state} to="/auth/signin" className="text-primary underline">Login</Link>
                     </p>
 
                     <div className="mt-4">

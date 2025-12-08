@@ -9,6 +9,7 @@ import AboutUs from '../pages/AboutUS/AboutUs';
 import BeaRider from '../pages/Be-a-Rider/BeaRider';
 import Coverage from '../pages/Coverage/Coverage';
 import SendParcel from '../pages/SendParcel/SendParcel';
+import PrivateRoutes from './PrivateRoutes';
 
 
 
@@ -29,7 +30,9 @@ export const router = createBrowserRouter([
       },
       {
         path: '/berider',
-        element:<BeaRider></BeaRider>
+        element:<PrivateRoutes>
+          <BeaRider></BeaRider>
+          </PrivateRoutes>
       },
       {
         path: '/coverage',
