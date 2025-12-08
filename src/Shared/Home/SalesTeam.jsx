@@ -21,7 +21,7 @@ export default function SalesTeam() {
       </div>
 
       <div className="w-full overflow-hidden py-3 mt-10">
-        <marquee scrollamount="12" direction="left" loop='0' pauseOnHover='true'>
+        <marquee scrollamount="12" direction="left" loop='0'>
           <div className="flex items-center gap-20">
             {logos.map((logo, i) => (
               <img

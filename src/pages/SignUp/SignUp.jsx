@@ -3,14 +3,38 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/Logo (2).png";
 import sideImg from "../../assets/Login-Banner.png";
 import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
 
 const SignUp = () => {
+    const {registerUser , googleSignIn} = useAuth()
     const {register,handleSubmit ,formState: {errors}} = useForm();
 
     const handleSignUp =(data)=>{
         console.log(data);
+        registerUser(data.email , data.password )
+        .then(result =>{
+            console.log(result);
+            
+        })
+        .catch(err =>{
+            console.log(err);
+            
+        })
         
     }
+
+const handleGoogleSignIn = () =>{
+    googleSignIn()
+    .then(res =>{
+        console.log(res);
+        
+    })
+    .catch(err =>{
+        console.log(err);
+        
+    })
+}
+
     return (
         <div className=" bg-gradient-to-r from-white to-[#F7FAE7] min-h-screen flex items-center justify-center bg-base-200">
             <div className="bg-white rounded-3xl shadow-lg w-full max-w-5xl grid grid-cols-1 md:grid-cols-2">
@@ -38,11 +62,14 @@ const SignUp = () => {
                             {errors.email?.type=='required' && <p className="text-red-400 text-sm">Email is required..</p>}
                         {/* password */}
                         <input type="password"
-                        {...register('password' , {required: true , minLength:6})}
+                        {...register('password' , {required: true , minLength:6 ,pattern:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$/})}
                             placeholder="Password"
                             className="border px-4 py-2 rounded-lg focus:outline-primary" />
                             {errors.password?.type=='required' && <p className="text-red-400 text-sm">Password is required..</p>}
                             {errors.password?.type=='minLength' && <p className="text-red-400 text-sm">Password must be 6 character or longer..</p>}
+                            {
+                                errors.password?.type === 'pattern' && <p className="text-red-400 text-sm">Ensures at least one lowercase, one uppercase, and one special character.</p>
+                            }
 
                         <button type="submit" className="bg-secondary text-base-300 font-semibold py-2 rounded-lg hover:bg-green-400 transition">
                             Register
@@ -54,7 +81,7 @@ const SignUp = () => {
                     </p>
 
                     <div className="mt-4">
-                        <button className="w-full flex items-center justify-center gap-3 bg-white text-black border border-secondary rounded-lg py-2 hover:bg-gray-100 transition font-medium shadow-sm hover:shadow">
+                        <button onClick={handleGoogleSignIn} className="w-full flex items-center justify-center gap-3 bg-white text-black border border-secondary rounded-lg py-2 hover:bg-gray-100 transition font-medium shadow-sm hover:shadow">
                             <svg aria-label="Google logo" width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <g>
                                     <path fill="#fff" d="M0 0h512v512H0z" />

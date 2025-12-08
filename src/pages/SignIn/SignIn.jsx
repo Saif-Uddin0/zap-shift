@@ -2,8 +2,40 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/Logo (2).png";
 import sideImg from "../../assets/Login-Banner.png";
+import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
 
 const SignIn = () => {
+    const  { signInUser ,googleSignIn} = useAuth()
+    const {register, handleSubmit , formState: {errors}} = useForm();
+
+
+const handleLogin =(data)=>{
+    console.log(data);
+    signInUser(data.email , data.password)
+    .then(result =>{
+        console.log(result);
+        
+    })
+    .catch(err =>{
+        console.log(err);
+        
+    })
+    
+}
+const handleGoogleSignIn = () =>{
+    googleSignIn()
+    .then(res =>{
+        console.log(res);
+        
+    })
+    .catch(err =>{
+        console.log(err);
+        
+    })
+}
+
+
     return (
         <div className="bg-gradient-to-r from-white to-[#F7FAE7] min-h-screen flex items-center justify-center">
             <div className="bg-white rounded-3xl shadow-lg w-full max-w-5xl grid grid-cols-1 md:grid-cols-2">
@@ -15,16 +47,20 @@ const SignIn = () => {
                     <h2 className="text-3xl font-bold text-primary mb-2">Welcome Back</h2>
                     <p className="text-sm text-gray-600 mb-5">Login to continue</p>
 
-                    <form className="flex flex-col gap-4">
+                    <form onSubmit={handleSubmit(handleLogin)} className="flex flex-col gap-4">
                         {/* email */}
                         <input type="email"
+                        {...register('email' , {require: true})}
                             placeholder="Email"
                             className="border px-4 py-2 rounded-lg focus:outline-primary" />
+                            { errors.email?.type === 'required' && <p className="text-red-400 text-sm">Email is required</p>}
                             
                         {/* password */}
                         <input type="password"
+                            {...register('password', {required: true})}
                             placeholder="Password"
                             className="border px-4 py-2 rounded-lg focus:outline-primary" />
+                            { errors.password?.type === 'required' && <p className="text-red-400 text-sm">Password is required</p>}
 
                         <div className="flex justify-between text-sm text-primary">
                             <Link to="/forgot-password">Forgot Password?</Link>
@@ -40,7 +76,7 @@ const SignIn = () => {
                     </p>
 
                     <div className="mt-4">
-                        <button className="w-full flex items-center justify-center gap-3 bg-white text-black border border-secondary rounded-lg py-2 hover:bg-gray-100 transition font-medium shadow-sm hover:shadow">
+                        <button onClick={handleGoogleSignIn} className="w-full flex items-center justify-center gap-3 bg-white text-black border border-secondary rounded-lg py-2 hover:bg-gray-100 transition font-medium shadow-sm hover:shadow">
                             <svg aria-label="Google logo" width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <g>
                                     <path fill="#fff" d="M0 0h512v512H0z" />
