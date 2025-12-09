@@ -1,11 +1,20 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useLoaderData } from "react-router-dom";
 
 export default function SendParcel() {
-  const [parcelType, setParcelType] = useState("document");
+  const {handleSubmit , register , formState: {errors}} = useForm();
+  const data = useLoaderData();
+  // find the single region
+  const regionDuplicated = data.map(c => c.region)
+  const region = [...new Set(regionDuplicated)]
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // You can handle form submission logic here
+  // 
+  
+  
+
+  const handleSendParcel = data => {
+    console.log(data);
     alert("Form submitted successfully!");
   };
 
@@ -15,16 +24,14 @@ export default function SendParcel() {
       <h2 className="text-5xl font-semibold text-primary mb-2">Send A Parcel</h2>
       <p className="text-base-300 text-lg font-bold mb-8">Enter your parcel details</p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(handleSendParcel)}>
         {/* Parcel Type */}
         <div className="flex gap-6 mb-8 items-center">
           <label className="flex items-center gap-2 text-primary cursor-pointer">
             <input
               type="radio"
-              name="parcelType"
               value="document"
-              checked={parcelType === "document"}
-              onChange={() => setParcelType("document")}
+              {...register('percelType')}
               className="text-base-200 focus:ring-green-400"
             />
             Document
@@ -32,10 +39,9 @@ export default function SendParcel() {
           <label className="flex items-center gap-2 text-primary cursor-pointer">
             <input
               type="radio"
-              name="parcelType"
+              defaultChecked
               value="non-document"
-              checked={parcelType === "non-document"}
-              onChange={() => setParcelType("non-document")}
+              {...register('percelType')}
               className="text-base-200 focus:ring-green-400"
             />
             Non-Document
@@ -43,6 +49,8 @@ export default function SendParcel() {
         </div>
 
         {/* Parcel Details */}
+
+        {/* percel Name */}
         <div className="grid md:grid-cols-2 gap-6 mb-10">
           <div>
             <label htmlFor="parcelName" className="block text-primary mb-2">
@@ -50,20 +58,22 @@ export default function SendParcel() {
             </label>
             <input
               id="parcelName"
-              name="parcelName"
+              {...register('parcelName')}
               type="text"
               placeholder="Parcel Name"
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
             />
           </div>
           <div>
+
+            {/* percel waight */}
             <label htmlFor="parcelWeight" className="block text-primary mb-2">
               Parcel Weight (KG)
             </label>
             <input
               id="parcelWeight"
-              name="parcelWeight"
-              type="text"
+              {...register('parcelWeight')}
+              type="number"
               placeholder="Parcel Weight (KG)"
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
             />
@@ -84,7 +94,7 @@ export default function SendParcel() {
                 </label>
                 <input
                   id="senderName"
-                  name="senderName"
+                  {...register('senderName')}
                   type="text"
                   placeholder="Sender Name"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
@@ -97,7 +107,7 @@ export default function SendParcel() {
                 </label>
                 <input
                   id="senderAddress"
-                  name="senderAddress"
+                  {...register('senderAddress')}
                   type="text"
                   placeholder="Address"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
@@ -110,7 +120,7 @@ export default function SendParcel() {
                 </label>
                 <input
                   id="senderPhone"
-                  name="senderPhone"
+                  {...register('senderPhone')}
                   type="text"
                   placeholder="Sender Phone No"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
@@ -118,19 +128,17 @@ export default function SendParcel() {
               </div>
 
               <div>
-                <label htmlFor="senderDistrict" className="block text-primary mb-2">
-                  Your District
+                <label htmlFor="senderRegion" className="block text-primary mb-2">
+                  Your Region
                 </label>
                 <select
-                  id="senderDistrict"
-                  name="senderDistrict"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
+                  id="senderRegion"
+                  {...register('senderRegion')}
+                  className="select w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
                 >
-                  <option value="">Select your District</option>
-                  <option value="dhaka">Dhaka</option>
-                  <option value="chattogram">Chattogram</option>
-                  <option value="khulna">Khulna</option>
-                  <option value="rajshahi">Rajshahi</option>
+                  <option>Select your Region</option>
+                  {region.map((r ,i) => <option key={i} value={r}>{r}</option>)}
+                  
                 </select>
               </div>
 
@@ -140,7 +148,7 @@ export default function SendParcel() {
                 </label>
                 <textarea
                   id="pickupInstruction"
-                  name="pickupInstruction"
+                  {...register('pickupInstruction')}
                   rows={2}
                   placeholder="Pickup Instruction"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
@@ -161,7 +169,7 @@ export default function SendParcel() {
                 </label>
                 <input
                   id="receiverName"
-                  name="receiverName"
+                  {...register('receiverName')}
                   type="text"
                   placeholder="Receiver Name"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
@@ -174,7 +182,7 @@ export default function SendParcel() {
                 </label>
                 <input
                   id="receiverAddress"
-                  name="receiverAddress"
+                  {...register('receiverAddress')}
                   type="text"
                   placeholder="Receiver Address"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
@@ -187,7 +195,7 @@ export default function SendParcel() {
                 </label>
                 <input
                   id="receiverContact"
-                  name="receiverContact"
+                  {...register('receiverContact')}
                   type="text"
                   placeholder="Receiver Contact No"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
@@ -195,19 +203,16 @@ export default function SendParcel() {
               </div>
 
               <div>
-                <label htmlFor="receiverDistrict" className="block text-primary mb-2">
-                  Receiver District
+                <label htmlFor="receiverRegion" className="block text-primary mb-2">
+                  Receiver Region
                 </label>
                 <select
-                  id="receiverDistrict"
-                  name="receiverDistrict"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
+                  id="receiverRegion"
+                  {...register('receiverRegion')}
+                  className="select w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
                 >
-                  <option value="">Select your District</option>
-                  <option value="dhaka">Dhaka</option>
-                  <option value="chattogram">Chattogram</option>
-                  <option value="khulna">Khulna</option>
-                  <option value="rajshahi">Rajshahi</option>
+                  <option>Select your Region</option>
+                  {region.map((r ,i) => <option key={i} value={r}>{r}</option>)}
                 </select>
               </div>
 
@@ -217,7 +222,7 @@ export default function SendParcel() {
                 </label>
                 <textarea
                   id="deliveryInstruction"
-                  name="deliveryInstruction"
+                  {...register('deliveryInstruction')}
                   rows={2}
                   placeholder="Delivery Instruction"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
