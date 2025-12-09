@@ -1,15 +1,25 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router-dom";
 
 export default function SendParcel() {
-  const {handleSubmit , register , formState: {errors}} = useForm();
+  const {handleSubmit , register ,control , formState: {errors}} = useForm();
   const data = useLoaderData();
   // find the single region
   const regionDuplicated = data.map(c => c.region)
   const region = [...new Set(regionDuplicated)]
 
-  // 
+
+  // observer when chnage the region immedately chage the district
+  const senderRegion = useWatch({control , name: 'senderRegion'})
+  const receiverRegion = useWatch({control , name: 'receiverRegion'})
+
+  // district by region
+  const districtByRegion = region =>{
+    const regionDistrict = data.filter(c => c.region === region);
+    const district = regionDistrict.map( d => d.district)
+    return district;
+  }
   
   
 
@@ -129,7 +139,7 @@ export default function SendParcel() {
 
               <div>
                 <label htmlFor="senderRegion" className="block text-primary mb-2">
-                  Your Region
+                  Sender Region
                 </label>
                 <select
                   id="senderRegion"
@@ -138,6 +148,26 @@ export default function SendParcel() {
                 >
                   <option>Select your Region</option>
                   {region.map((r ,i) => <option key={i} value={r}>{r}</option>)}
+                  
+                </select>
+              </div>
+
+
+              <div>
+                <label htmlFor="senderDistrict" className="block text-primary mb-2">
+                   District
+                </label>
+                <select
+                  id="senderDistrict"
+                  {...register('senderDistrict')}
+                  className="select w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
+                >
+                  <option>Select your district</option>
+                  {
+                    districtByRegion(senderRegion).map( (d , i)=>
+                      <option key={i} value={d}>{d}</option>
+                    )
+                  }
                   
                 </select>
               </div>
@@ -213,6 +243,25 @@ export default function SendParcel() {
                 >
                   <option>Select your Region</option>
                   {region.map((r ,i) => <option key={i} value={r}>{r}</option>)}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="receiverDistrict" className="block text-primary mb-2">
+                   District
+                </label>
+                <select
+                  id="reciverDistrict"
+                  {...register('receiverDistrict')}
+                  className="select w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
+                >
+                  <option>Select your district</option>
+                  {
+                    districtByRegion(receiverRegion).map( (d , i)=>
+                      <option key={i} value={d}>{d}</option>
+                    )
+                  }
+                  
                 </select>
               </div>
 
