@@ -10,6 +10,8 @@ import BeaRider from '../pages/Be-a-Rider/BeaRider';
 import Coverage from '../pages/Coverage/Coverage';
 import SendParcel from '../pages/SendParcel/SendParcel';
 import PrivateRoutes from './PrivateRoutes';
+import DashBoard from '../Layout/DashBoard/DashBoard';
+import MyPercel from '../pages/DasgBoard/MyPercel';
 
 
 
@@ -58,6 +60,18 @@ export const router = createBrowserRouter([
         path:'/auth/signup',
         element:<SignUp></SignUp>
       },
+    ]
+  },
+  {
+    path: 'dashboard',
+    element: <PrivateRoutes>
+      <DashBoard></DashBoard>
+    </PrivateRoutes>,
+    children:[
+      {
+        path: 'my-percels',
+        element: <MyPercel></MyPercel>
+      }
     ]
   }
 ]);

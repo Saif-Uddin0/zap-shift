@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -59,10 +58,10 @@ export default function SendParcel() {
         cost = minCharge + extraCharge;
       }
     }
-    console.log('cost', cost);
+    // console.log('cost', cost);
     const percelData ={
       ...data , cost,
-      // email: user?.email,
+      email: user?.email,
       bookingDate: new Date()
     }
 
@@ -81,11 +80,11 @@ export default function SendParcel() {
           console.log(res.data);
           
         })
-        // Swal.fire({
-        //   title: "Deleted!",
-        //   text: "Your file has been deleted.",
-        //   icon: "success"
-        // });
+        Swal.fire({
+          title: "Success!",
+          text: "Your percel data has been Transfer to our Team.",
+          icon: "success"
+        });
       }
     });
 
@@ -169,6 +168,7 @@ export default function SendParcel() {
                   id="senderName"
                   {...register('senderName')}
                   type="text"
+                  defaultValue={user?.displayName}
                   placeholder="Sender Name"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
                 />

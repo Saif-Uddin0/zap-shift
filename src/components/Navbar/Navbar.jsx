@@ -21,9 +21,13 @@ const Navbar = () => {
             <li><NavLink to="/coverage" className={navLinkClass}>Coverage</NavLink></li>
             <li><NavLink to="/about" className={navLinkClass}>About Us</NavLink></li>
             <li><NavLink to="/pricing" className={navLinkClass}>Pricing</NavLink></li>
-            <li><NavLink to="/contact" className={navLinkClass}>Contact</NavLink></li>
             <li><NavLink to="/berider" className={navLinkClass}>Be a Rider</NavLink></li>
             <li><NavLink to="/send-parcel" className={navLinkClass}>Send Parcel</NavLink></li>
+            {
+                user && <>
+                <li><NavLink to="dashboard/my-percels" className={navLinkClass}>My Parcel</NavLink></li>
+                </>
+            }
         </>
     );
 
@@ -40,9 +44,9 @@ const Navbar = () => {
         <nav className="">
             <div className="w-full container mx-auto bg-base-100/98  rounded-full shadow-sm flex items-center justify-between px-4 py-4">
 
-                <Link to="/" className="flex items-center">
+                <div className="flex items-center">
                     <img src={logo} alt="Logo" className="h-10 w-auto" />
-                </Link>
+                </div>
 
                 <ul className="hidden lg:flex items-center gap-8 font-medium">
                     {links}
