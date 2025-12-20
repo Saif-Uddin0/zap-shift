@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router-dom";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 export default function SendParcel() {
-  const {handleSubmit , register ,control , formState: {errors}} = useForm();
+  const { handleSubmit, register, control, 
+    // formState: { errors } 
+  } = useForm();
+  const { user } = useAuth();
+  console.log(user);
+  
+
+  const axiosSecure = useAxiosSecure();
   const data = useLoaderData();
   // find the single region
   const regionDuplicated = data.map(c => c.region)
@@ -11,21 +21,74 @@ export default function SendParcel() {
 
 
   // observer when chnage the region immedately chage the district
-  const senderRegion = useWatch({control , name: 'senderRegion'})
-  const receiverRegion = useWatch({control , name: 'receiverRegion'})
+  const senderRegion = useWatch({ control, name: 'senderRegion' })
+  const receiverRegion = useWatch({ control, name: 'receiverRegion' })
 
   // district by region
-  const districtByRegion = region =>{
+  const districtByRegion = region => {
     const regionDistrict = data.filter(c => c.region === region);
-    const district = regionDistrict.map( d => d.district)
+    const district = regionDistrict.map(d => d.district)
     return district;
   }
-  
-  
+
+
+
+
+
 
   const handleSendParcel = data => {
     console.log(data);
-    alert("Form submitted successfully!");
+
+    // alert("Form submitted successfully!");
+    const isDocument = data.percelType === 'document';
+    const isSameDistrict = data.senderDistrict === data.receiverDistrict;
+    const parcelWeight = parseFloat(data.parcelWeight)
+    let cost = 0;
+    if (isDocument) {
+      cost = isSameDistrict ? 60 : 80;
+
+    }
+    else {
+      if (parcelWeight <= 3) {
+        cost = isSameDistrict ? 110 : 150;
+      }
+      else {
+        const minCharge = isSameDistrict ? 110 : 150;
+        const extraWeight = parcelWeight - 3;
+        const extraCharge = isSameDistrict ? extraWeight * 40 : extraWeight * 40 + 40;
+        cost = minCharge + extraCharge;
+      }
+    }
+    console.log('cost', cost);
+    const percelData ={
+      ...data , cost,
+      // email: user?.email,
+      bookingDate: new Date()
+    }
+
+    Swal.fire({
+      title: "Agree with the cost?",
+      text: `You will be charged ${cost} taka!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, I'm Agree!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.post('/percels' , percelData)
+        .then(res => {
+          console.log(res.data);
+          
+        })
+        // Swal.fire({
+        //   title: "Deleted!",
+        //   text: "Your file has been deleted.",
+        //   icon: "success"
+        // });
+      }
+    });
+
   };
 
   return (
@@ -147,15 +210,15 @@ export default function SendParcel() {
                   className="select w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
                 >
                   <option>Select your Region</option>
-                  {region.map((r ,i) => <option key={i} value={r}>{r}</option>)}
-                  
+                  {region.map((r, i) => <option key={i} value={r}>{r}</option>)}
+
                 </select>
               </div>
 
 
               <div>
                 <label htmlFor="senderDistrict" className="block text-primary mb-2">
-                   District
+                  District
                 </label>
                 <select
                   id="senderDistrict"
@@ -164,11 +227,11 @@ export default function SendParcel() {
                 >
                   <option>Select your district</option>
                   {
-                    districtByRegion(senderRegion).map( (d , i)=>
+                    districtByRegion(senderRegion).map((d, i) =>
                       <option key={i} value={d}>{d}</option>
                     )
                   }
-                  
+
                 </select>
               </div>
 
@@ -242,13 +305,13 @@ export default function SendParcel() {
                   className="select w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
                 >
                   <option>Select your Region</option>
-                  {region.map((r ,i) => <option key={i} value={r}>{r}</option>)}
+                  {region.map((r, i) => <option key={i} value={r}>{r}</option>)}
                 </select>
               </div>
 
               <div>
                 <label htmlFor="receiverDistrict" className="block text-primary mb-2">
-                   District
+                  District
                 </label>
                 <select
                   id="reciverDistrict"
@@ -257,11 +320,11 @@ export default function SendParcel() {
                 >
                   <option>Select your district</option>
                   {
-                    districtByRegion(receiverRegion).map( (d , i)=>
+                    districtByRegion(receiverRegion).map((d, i) =>
                       <option key={i} value={d}>{d}</option>
                     )
                   }
-                  
+
                 </select>
               </div>
 
