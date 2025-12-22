@@ -14,9 +14,9 @@ const MyParcel = () => {
         data: parcels = [],
         isLoading,
         isError,
+        refetch
     } = useQuery({
         queryKey: ["my-parcels", user?.email],
-        enabled: !!user?.email,
         queryFn: async () => {
             const res = await axiosSecure.get(`/percels?email=${user.email}`);
             return res.data;
@@ -37,11 +37,22 @@ const MyParcel = () => {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                // Swal.fire({
-                //     title: "Deleted!",
-                //     text: "Your file has been deleted.",
-                //     icon: "success"
-                // });
+
+                axiosSecure.delete(`/percels/${id}`)
+                    .then(res => {
+                        console.log(res.data);
+                        if (res.data.deletedCount) {
+                            // refresh the data in ui
+                            refetch()
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your parcel request has been deleted.",
+                                icon: "success"
+                            });
+                        }
+
+                    })
+
             }
         });
 
@@ -78,6 +89,7 @@ const MyParcel = () => {
                                 <th><FaHashtag /></th>
                                 <th>Parcel Name</th>
                                 <th>Cost</th>
+                                <th>Payment</th>
                                 <th>Status</th>
                                 <th className="text-center">Actions</th>
                             </tr>
@@ -96,6 +108,7 @@ const MyParcel = () => {
                                         <td>{index + 1}</td>
                                         <td className="font-medium">{parcel.parcelName}</td>
                                         <td>৳ {parcel.cost}</td>
+                                        <td>blue</td>
                                         <td>
                                             <span className="badge  badge-sm">
                                                 Pending
