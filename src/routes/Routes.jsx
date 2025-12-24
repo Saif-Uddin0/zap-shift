@@ -12,6 +12,9 @@ import SendParcel from '../pages/SendParcel/SendParcel';
 import PrivateRoutes from './PrivateRoutes';
 import DashBoard from '../Layout/DashBoard/DashBoard';
 import MyPercel from '../pages/DasgBoard/MyPercel';
+import Payment from '../pages/DasgBoard/Payment/Payment';
+import PaymentSuccess from '../pages/DasgBoard/Payment/PaymentSuccess';
+import PaymentCancel from '../pages/DasgBoard/Payment/PaymentCancel';
 
 
 
@@ -71,7 +74,19 @@ export const router = createBrowserRouter([
       {
         path: 'my-percels',
         element: <MyPercel></MyPercel>
-      }
+      },
+      {
+        path: 'payment/:parcelId',
+        element: <Payment></Payment>
+      },
+      {
+        path: 'payment-success',
+        element: <PaymentSuccess></PaymentSuccess>
+      },
+      {
+        path: 'payment-cancelled',
+        element: <PaymentCancel></PaymentCancel>
+      },
     ]
   }
 ]);

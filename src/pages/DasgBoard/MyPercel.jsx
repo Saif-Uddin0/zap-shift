@@ -4,7 +4,9 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { FaMagnifyingGlass, FaTrashCan } from "react-icons/fa6";
 import { FiEdit } from "react-icons/fi";
 import { FaHashtag } from "react-icons/fa";
+import { MdOutlinePayment } from "react-icons/md";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const MyParcel = () => {
     const { user } = useAuth();
@@ -59,6 +61,20 @@ const MyParcel = () => {
     }
 
 
+    const handlePayment =async(parcel)=>{
+        const  paymentInfo = {
+            cost: parcel.cost,
+            parcelId : parcel._id,
+            email: parcel.email,
+            parcelName: parcel.parcelName
+
+        }
+        const res = await axiosSecure.post('/payment-checkout-session',paymentInfo);
+        console.log(res.data.url);
+        
+        window.location.href= res.data.url;
+    }
+
 
     if (isLoading) {
         return <p className="text-center py-10 text-gray-500 min-h-screen">Loading parcels...</p>;
@@ -108,32 +124,32 @@ const MyParcel = () => {
                                         <td>{index + 1}</td>
                                         <td className="font-medium">{parcel.parcelName}</td>
                                         <td>৳ {parcel.cost}</td>
-                                        <td>blue</td>
                                         <td>
-                                            <span className="badge  badge-sm">
-                                                Pending
-                                            </span>
+                                            {
+                                                parcel.paymentStatus === 'paid'? <span className="badge  badge-sm badge-secondary">
+                                                Paid
+                                            </span> : 
+                                            <button onClick={()=>handlePayment(parcel)} className="badge  badge-sm badge-secondary text-base-300 hover:cursor-pointer">
+                                               <MdOutlinePayment /> Pay
+                                            </button>
+                                            }
                                         </td>
+                                            <td>blue</td>
                                         <td>
                                             <div className="flex items-center justify-center gap-2">
-                                                <button
-                                                    className="btn btn-sm btn-ghost border border-gray-200 hover:bg-base-200"
-                                                    title="View"
-                                                >
-                                                    <FaMagnifyingGlass />
-                                                </button>
+                                                
                                                 <button
                                                     className="btn btn-sm btn-ghost border border-gray-200 hover:bg-base-200"
                                                     title="Edit"
                                                 >
-                                                    <FiEdit />
+                                                    <FiEdit />Edit
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(parcel._id)}
                                                     className="btn btn-sm btn-ghost border border-gray-200 hover:bg-red-100 text-red-500"
                                                     title="Delete"
                                                 >
-                                                    <FaTrashCan />
+                                                    <FaTrashCan />Delete
                                                 </button>
                                             </div>
                                         </td>

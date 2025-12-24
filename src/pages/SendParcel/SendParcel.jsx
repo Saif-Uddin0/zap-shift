@@ -5,12 +5,12 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 
 export default function SendParcel() {
-  const { handleSubmit, register, control, 
+  const { handleSubmit, register, control,
     // formState: { errors } 
   } = useForm();
   const { user } = useAuth();
   console.log(user);
-  
+
 
   const axiosSecure = useAxiosSecure();
   const data = useLoaderData();
@@ -59,8 +59,8 @@ export default function SendParcel() {
       }
     }
     // console.log('cost', cost);
-    const percelData ={
-      ...data , cost,
+    const percelData = {
+      ...data, cost,
       email: user?.email,
       bookingDate: new Date()
     }
@@ -75,11 +75,11 @@ export default function SendParcel() {
       confirmButtonText: "Yes, I'm Agree!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.post('/percels' , percelData)
-        .then(res => {
-          console.log(res.data);
-          
-        })
+        axiosSecure.post('/percels', percelData)
+          .then(res => {
+            console.log(res.data);
+
+          })
         Swal.fire({
           title: "Success!",
           text: "Your percel data has been Transfer to our Team.",
@@ -174,18 +174,7 @@ export default function SendParcel() {
                 />
               </div>
 
-              <div>
-                <label htmlFor="senderAddress" className="block text-primary mb-2">
-                  Address
-                </label>
-                <input
-                  id="senderAddress"
-                  {...register('senderAddress')}
-                  type="text"
-                  placeholder="Address"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
-                />
-              </div>
+
 
               <div>
                 <label htmlFor="senderPhone" className="block text-primary mb-2">
@@ -234,6 +223,18 @@ export default function SendParcel() {
 
                 </select>
               </div>
+              <div>
+                <label htmlFor="senderAddress" className="block text-primary mb-2">
+                  Address
+                </label>
+                <input
+                  id="senderAddress"
+                  {...register('senderAddress')}
+                  type="text"
+                  placeholder="Address"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
+                />
+              </div>
 
               <div>
                 <label htmlFor="pickupInstruction" className="block text-primary mb-2">
@@ -269,18 +270,7 @@ export default function SendParcel() {
                 />
               </div>
 
-              <div>
-                <label htmlFor="receiverAddress" className="block text-primary mb-2">
-                  Receiver Address
-                </label>
-                <input
-                  id="receiverAddress"
-                  {...register('receiverAddress')}
-                  type="text"
-                  placeholder="Receiver Address"
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
-                />
-              </div>
+
 
               <div>
                 <label htmlFor="receiverContact" className="block text-primary mb-2">
@@ -326,6 +316,18 @@ export default function SendParcel() {
                   }
 
                 </select>
+              </div>
+              <div>
+                <label htmlFor="receiverAddress" className="block text-primary mb-2">
+                  Receiver Address
+                </label>
+                <input
+                  id="receiverAddress"
+                  {...register('receiverAddress')}
+                  type="text"
+                  placeholder="Receiver Address"
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
+                />
               </div>
 
               <div>
