@@ -89,13 +89,19 @@ const Payment = () => {
                     <p className="text-lg font-semibold text-primary">
                         Total Payable: <span className="text-accent">৳ {parcel.cost}</span>
                     </p>
+                    {
+                        parcel.paymentStatus === 'paid' ? <button
+                            className="btn hover:cursor-not-allowed btn-primary text-base-100 px-8 text-lg"
+                        >
+                            Paid
+                        </button> : <button
+                            onClick={handlePayment}
+                            className="btn btn-secondary text-neutral px-8 text-lg"
+                        >
+                            Pay Now
+                        </button>
+                    }
 
-                    <button
-                        onClick={handlePayment}
-                        className="btn btn-secondary text-neutral px-8 text-lg"
-                    >
-                        Pay Now
-                    </button>
                 </div>
 
             </div>

@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import {
     FiMenu,
@@ -10,8 +9,22 @@ import {
     FiLogOut,
 } from "react-icons/fi";
 import logo from "../../assets/Logo (2).png";
+import useAuth from "../../hooks/useAuth";
+
 
 const Dashboard = () => {
+    const {  signOutUser } = useAuth();
+
+
+
+    const loggingOut = () => {
+        signOutUser()
+            .then()
+            .catch(err => {
+                console.log(err);
+
+            })
+    }
     const linkClass = ({ isActive }) =>
         `flex items-center gap-3 px-5 py-3 rounded-lg text-sm font-medium transition
      ${isActive
@@ -78,12 +91,6 @@ const Dashboard = () => {
 
                     {/* Menu */}
                     <ul className="menu flex-1 px-3 py-4 space-y-1 ">
-                        <li>
-                            <NavLink to="/dashboard" className={linkClass}>
-                                <FiHome />
-                                Dashboard
-                            </NavLink>
-                        </li>
 
                         <li>
                             <NavLink to="/dashboard/my-percels" className={linkClass}>
@@ -116,7 +123,7 @@ const Dashboard = () => {
 
                     {/* Logout */}
                     <div className="px-4 py-4 border-dashed border-gray-300 border-t">
-                        <button className="flex items-center gap-3 w-full px-4 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50 transition hover:cursor-pointer">
+                        <button onClick={loggingOut} className="flex items-center gap-3 w-full px-4 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50 transition hover:cursor-pointer">
                             <FiLogOut />
                             Logout
                         </button>

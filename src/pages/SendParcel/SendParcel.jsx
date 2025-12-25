@@ -1,10 +1,11 @@
 import { useForm, useWatch } from "react-hook-form";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 
 export default function SendParcel() {
+  const navigate = useNavigate();
   const { handleSubmit, register, control,
     // formState: { errors } 
   } = useForm();
@@ -78,13 +79,16 @@ export default function SendParcel() {
         axiosSecure.post('/percels', percelData)
           .then(res => {
             console.log(res.data);
-
+            if (res.data.insertedId) {
+              navigate('/dashboard/my-percels')
+              Swal.fire({
+                title: "Success!",
+                text: "Your percel data has been Transfer please Pay the amount",
+                icon: "success"
+              });
+            }
           })
-        Swal.fire({
-          title: "Success!",
-          text: "Your percel data has been Transfer to our Team.",
-          icon: "success"
-        });
+
       }
     });
 

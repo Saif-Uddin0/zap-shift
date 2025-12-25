@@ -7,6 +7,7 @@ import { FaHashtag } from "react-icons/fa";
 import { MdOutlinePayment } from "react-icons/md";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import { CircleDollarSign } from "lucide-react";
 
 const MyParcel = () => {
     const { user } = useAuth();
@@ -71,7 +72,6 @@ const MyParcel = () => {
         }
         const res = await axiosSecure.post('/payment-checkout-session',paymentInfo);
         console.log(res.data.url);
-        
         window.location.href= res.data.url;
     }
 
@@ -122,14 +122,14 @@ const MyParcel = () => {
                                 parcels.map((parcel, index) => (
                                     <tr key={parcel._id} className="hover:bg-base-100 transition">
                                         <td>{index + 1}</td>
-                                        <td className="font-medium">{parcel.parcelName}</td>
+                                        <td className="font-medium text-primary hover:text-accent "><Link to={`/dashboard/payment/${parcel._id}`}>{parcel.parcelName}</Link></td>
                                         <td>৳ {parcel.cost}</td>
                                         <td>
                                             {
-                                                parcel.paymentStatus === 'paid'? <span className="badge  badge-sm badge-secondary">
-                                                Paid
+                                                parcel.paymentStatus === 'paid'? <span className="badge  badge-md badge-primary text-base-100 cursor-not-allowed">
+                                                <CircleDollarSign size={15} />Paid
                                             </span> : 
-                                            <button onClick={()=>handlePayment(parcel)} className="badge  badge-sm badge-secondary text-base-300 hover:cursor-pointer">
+                                            <button onClick={()=>handlePayment(parcel)} className="badge  badge-md badge-secondary text-base-300 hover:cursor-pointer">
                                                <MdOutlinePayment /> Pay
                                             </button>
                                             }
