@@ -91,11 +91,17 @@ const Dashboard = () => {
 
                     {/* Menu */}
                     <ul className="menu flex-1 px-3 py-4 space-y-1 ">
+                        <li>
+                            <NavLink to="/dashboard/send-parcel" className={linkClass}>
+                                <FiPackage />
+                                Send Parcel
+                            </NavLink>
+                        </li>
 
                         <li>
                             <NavLink to="/dashboard/my-percels" className={linkClass}>
                                 <FiPackage />
-                                Parcels
+                               My Parcels
                             </NavLink>
                         </li>
 

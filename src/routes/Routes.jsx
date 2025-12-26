@@ -15,6 +15,7 @@ import MyPercel from '../pages/DasgBoard/MyPercel';
 import Payment from '../pages/DasgBoard/Payment/Payment';
 import PaymentSuccess from '../pages/DasgBoard/Payment/PaymentSuccess';
 import PaymentCancel from '../pages/DasgBoard/Payment/PaymentCancel';
+import Services from '../pages/ServicesZap/Services';
 
 
 
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
         element:<AboutUs></AboutUs>
       },
       {
+        path: '/services',
+        element:<Services></Services>
+      },
+      {
         path: '/berider',
         element:<PrivateRoutes>
           <BeaRider></BeaRider>
@@ -44,11 +49,7 @@ export const router = createBrowserRouter([
         element:<Coverage></Coverage>,
         loader: () => fetch('/serviceCenter.json')
       },
-      {
-        path: '/send-parcel',
-        element:<SendParcel></SendParcel>,
-        loader: () => fetch('/serviceCenter.json')
-      },
+      
     ]
   },
   {
@@ -86,6 +87,11 @@ export const router = createBrowserRouter([
       {
         path: 'payment-cancelled',
         element: <PaymentCancel></PaymentCancel>
+      },
+      {
+        path: 'send-parcel',
+        element:<SendParcel></SendParcel>,
+        loader: () => fetch('/serviceCenter.json')
       },
     ]
   }
