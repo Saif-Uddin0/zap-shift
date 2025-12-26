@@ -10,6 +10,9 @@ import {
 } from "react-icons/fi";
 import logo from "../../assets/Logo (2).png";
 import useAuth from "../../hooks/useAuth";
+import { FaRegCreditCard } from "react-icons/fa";
+import { MdInventory2 } from "react-icons/md";
+import { PackageSearch } from "lucide-react";
 
 
 const Dashboard = () => {
@@ -93,22 +96,22 @@ const Dashboard = () => {
                     <ul className="menu flex-1 px-3 py-4 space-y-1 ">
                         <li>
                             <NavLink to="/dashboard/send-parcel" className={linkClass}>
-                                <FiPackage />
+                                <FiTruck className="text-lg"></FiTruck>
                                 Send Parcel
                             </NavLink>
                         </li>
 
                         <li>
                             <NavLink to="/dashboard/my-percels" className={linkClass}>
-                                <FiPackage />
+                                <PackageSearch size={18} />
                                My Parcels
                             </NavLink>
                         </li>
 
                         <li>
-                            <NavLink to="/dashboard/riders" className={linkClass}>
-                                <FiTruck />
-                                Riders
+                            <NavLink to="/dashboard/payment-history" className={linkClass}>
+                                <FaRegCreditCard />
+                                Payment History
                             </NavLink>
                         </li>
 

@@ -16,6 +16,7 @@ import Payment from '../pages/DasgBoard/Payment/Payment';
 import PaymentSuccess from '../pages/DasgBoard/Payment/PaymentSuccess';
 import PaymentCancel from '../pages/DasgBoard/Payment/PaymentCancel';
 import Services from '../pages/ServicesZap/Services';
+import PaymentHistory from '../pages/DasgBoard/PaymentHistory';
 
 
 
@@ -87,6 +88,10 @@ export const router = createBrowserRouter([
       {
         path: 'payment-cancelled',
         element: <PaymentCancel></PaymentCancel>
+      },
+      {
+        path: 'payment-history',
+        element: <PaymentHistory></PaymentHistory>
       },
       {
         path: 'send-parcel',

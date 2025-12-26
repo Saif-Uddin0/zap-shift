@@ -3,6 +3,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Loader from '../../../components/Loader/Loader';
+import { Link } from 'lucide-react';
 
 const Payment = () => {
     const { parcelId } = useParams();
@@ -90,16 +91,30 @@ const Payment = () => {
                         Total Payable: <span className="text-accent">৳ {parcel.cost}</span>
                     </p>
                     {
-                        parcel.paymentStatus === 'paid' ? <button
-                            className="btn hover:cursor-not-allowed btn-primary text-base-100 px-8 text-lg"
-                        >
-                            Paid
-                        </button> : <button
-                            onClick={handlePayment}
-                            className="btn btn-secondary text-neutral px-8 text-lg"
-                        >
-                            Pay Now
-                        </button>
+                        parcel.paymentStatus === 'paid' ?
+                            <div className="flex flex-col sm:flex-row items-center gap-4">
+                                <Link to={'/dashboard/my-percels'}
+                                >
+                                    <button className="btn btn-secondary text-base-100 px-8 text-lg">Back</button>
+                                </Link>
+                                <button
+                                    className="btn hover:cursor-not-allowed btn-primary text-base-100 px-8 text-lg"
+                                >
+                                    Paid
+                                </button>
+                            </div> :
+                            <div className="flex flex-col sm:flex-row items-center gap-4">
+                                <Link to={'/dashboard/my-percels'}
+                                >
+                                    <button className="btn btn-secondary text-base-100 px-8 text-lg">Back</button>
+                                </Link>
+                                <button
+                                    onClick={handlePayment}
+                                    className="btn btn-secondary text-neutral px-8 text-lg"
+                                >
+                                    Pay Now
+                                </button>
+                            </div>
                     }
 
                 </div>

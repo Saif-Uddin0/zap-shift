@@ -8,6 +8,7 @@ import { MdOutlinePayment } from "react-icons/md";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { CircleDollarSign } from "lucide-react";
+import Loader from "../../components/Loader/Loader";
 
 const MyParcel = () => {
     const { user } = useAuth();
@@ -77,7 +78,7 @@ const MyParcel = () => {
 
 
     if (isLoading) {
-        return <p className="text-center py-10 text-gray-500 min-h-screen">Loading parcels...</p>;
+        return <Loader></Loader>
     }
 
     if (isError) {
@@ -138,12 +139,12 @@ const MyParcel = () => {
                                         <td>
                                             <div className="flex items-center justify-center gap-2">
                                                 
-                                                <button
+                                                <Link to={`/dashboard/payment/${parcel._id}`}
                                                     className="btn btn-sm btn-ghost border border-gray-200 hover:bg-base-200"
                                                     title="Edit"
                                                 >
-                                                    <FiEdit />Edit
-                                                </button>
+                                                    <FaMagnifyingGlass></FaMagnifyingGlass>view
+                                                </Link>
                                                 <button
                                                     onClick={() => handleDelete(parcel._id)}
                                                     className="btn btn-sm btn-ghost border border-gray-200 hover:bg-red-100 text-red-500"
