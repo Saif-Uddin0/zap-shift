@@ -1,7 +1,33 @@
 import React from 'react';
 import riderImg from "../../assets/be-a-rider.png";
+import { useForm, useWatch } from 'react-hook-form';
+import useAuth from '../../hooks/useAuth';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useLoaderData } from 'react-router-dom';
 
 const BeaRider = () => {
+
+
+    const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
+    const { register, handleSubmit, control } = useForm();
+    const data = useLoaderData();
+
+    // find the single region
+    const regionDuplicated = data.map(c => c.region)
+    const region = [...new Set(regionDuplicated)]
+
+
+    // observer when chnage the region immedately chage the district
+    const senderRegion = useWatch({ control, name: 'senderRegion' })
+
+    const handleBeRider = data =>{
+        console.log(data);
+        
+    }
+
+
+
     return (
         <section className="container mx-auto bg-white rounded-2xl  px-20 py-12 shadow-md my-20">
             <div className="flex flex-col lg:flex-row justify-between items-center gap-10 py-10 px-7">
@@ -19,7 +45,7 @@ const BeaRider = () => {
                     </h3>
 
                     {/* Form */}
-                    <form className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+                    <form onSubmit={handleSubmit(handleBeRider)} className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
 
                         <div>
                             <label className="text-sm font-medium">Your Name</label>

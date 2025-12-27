@@ -5,10 +5,13 @@ import sideImg from "../../assets/Login-Banner.png";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const SignIn = () => {
     const [showpass, setShowPass] = useState(false);
-    const { signInUser, googleSignIn } = useAuth()
+    const { signInUser, googleSignIn } = useAuth();
+    const axiosSecure = useAxiosSecure();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const location = useLocation();
     const navigate = useNavigate();
@@ -30,8 +33,23 @@ const SignIn = () => {
     const handleGoogleSignIn = () => {
         googleSignIn()
             .then(res => {
-                console.log(res);
-                navigate(location?.state || '/')
+                console.log(res.user);
+                // create user in the database
+                const userInfo = {
+                    email: res.user.email,
+                    displayName: res.user.displayName,
+                    photoURL: res.user.photoURL
+                }
+                axiosSecure.post('/users', userInfo)
+                    .then(res => {
+
+                        console.log('user is created in the data base with social login in login page', res.data);
+                        navigate(location?.state || '/')
+                        toast.success("Sign in Successfully")
+
+
+                    })
+
 
             })
             .catch(err => {
@@ -62,7 +80,7 @@ const SignIn = () => {
 
                         {/* password */}
                         <div className="w-full relative">
-                            <input type={showpass? 'text' : 'passwordgit '}
+                            <input type={showpass ? 'text' : 'passwordgit '}
                                 {...register('password', { required: true })}
                                 placeholder="Password"
                                 className="border px-4 py-2 rounded-lg focus:outline-primary w-full pr-10" />

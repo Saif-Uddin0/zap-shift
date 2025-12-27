@@ -6,20 +6,23 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
     const [showpass, setShowPass] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
+    const axiosSecure = useAxiosSecure()
     const { registerUser, googleSignIn, updateUserProfile } = useAuth()
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleSignUp = (data) => {
-        console.log(data);
+
         const profileImg = data.photo[0];
         registerUser(data.email, data.password)
-            .then(result => {
-                console.log(result);
+            .then(() => {
+                // console.log(result);
 
                 // 1. store the img in form Data
                 const formData = new FormData();
@@ -28,13 +31,26 @@ const SignUp = () => {
                 // 2.sent the photo to store and get the url
                 axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host}`, formData)
                     .then(res => {
-                        console.log('after img upload', res.data.data.url);
+                        const photoUrl = res.data.data.url;
 
+                        // create user in the database
+                        const userInfo = {
+                            email: data.email,
+                            displayName: data.name,
+                            photoURL: photoUrl
+                        }
+                        axiosSecure.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user is created in the data base');
+
+                                }
+                            })
 
                         // update profile to firebase
                         const userProfile = {
                             displayName: data.name,
-                            photoURL: res.data.data.url
+                            photoURL: photoUrl
                         }
                         updateUserProfile(userProfile)
                             .then(() => {
@@ -58,8 +74,23 @@ const SignUp = () => {
     const handleGoogleSignIn = () => {
         googleSignIn()
             .then(res => {
-                console.log(res);
-                navigate(location?.state || '/')
+                console.log(res.user);
+
+                // create user in the database
+                const userInfo = {
+                    email: res.user.email,
+                    displayName: res.user.displayName,
+                    photoURL: res.user.photoURL
+                }
+                axiosSecure.post('/users', userInfo)
+                    .then(res => {
+
+                        console.log('user is created in the data base with social login ', res.data);
+                        navigate(location?.state || '/')
+                        toast.success("Sign in Successfully")
+
+
+                    })
             })
             .catch(err => {
                 console.log(err);
@@ -101,7 +132,7 @@ const SignUp = () => {
                         {/* password */}
                         <div className="relative w-full">
 
-                            <input type={showpass? 'text' : 'password'}
+                            <input type={showpass ? 'text' : 'password'}
                                 {...register('password', { required: true, minLength: 6, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$/ })}
                                 placeholder="Password"
                                 className="border px-4 py-2 rounded-lg focus:outline-primary w-full pr-10" />
