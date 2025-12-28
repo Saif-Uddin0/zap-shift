@@ -17,6 +17,7 @@ import PaymentSuccess from '../pages/DasgBoard/Payment/PaymentSuccess';
 import PaymentCancel from '../pages/DasgBoard/Payment/PaymentCancel';
 import Services from '../pages/ServicesZap/Services';
 import PaymentHistory from '../pages/DasgBoard/PaymentHistory';
+import ApproveRider from '../pages/DasgBoard/ApproveRider';
 
 
 
@@ -93,6 +94,10 @@ export const router = createBrowserRouter([
       {
         path: 'payment-history',
         element: <PaymentHistory></PaymentHistory>
+      },
+      {
+        path: 'approve-rider',
+        element: <ApproveRider></ApproveRider>
       },
       {
         path: 'send-parcel',

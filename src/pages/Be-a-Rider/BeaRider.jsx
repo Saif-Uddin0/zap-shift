@@ -4,6 +4,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useLoaderData } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const BeaRider = () => {
 
@@ -17,13 +18,34 @@ const BeaRider = () => {
     const regionDuplicated = data.map(c => c.region)
     const region = [...new Set(regionDuplicated)]
 
+    const districtByRegion = region => {
+        const regionDistrict = data.filter(c => c.region === region);
+        const district = regionDistrict.map(d => d.district)
+        return district;
+    }
+
 
     // observer when chnage the region immedately chage the district
-    const senderRegion = useWatch({ control, name: 'senderRegion' })
+    const senderRegion = useWatch({ control, name: 'region' })
 
-    const handleBeRider = data =>{
+    const handleBeRider = data => {
         console.log(data);
-        
+        axiosSecure.post('/riders', data)
+            .then(res => {
+                console.log(res.data);
+                
+                if (res.data.insertedId) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Your application has been submitted",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+
+                }
+            })
+
     }
 
 
@@ -49,63 +71,122 @@ const BeaRider = () => {
 
                         <div>
                             <label className="text-sm font-medium">Your Name</label>
-                            <input className="input input-bordered w-full mt-1" name="name" type="text" placeholder="Enter your name" />
+                            <input className="input input-bordered w-full mt-1"
+                                name="name"
+                                {...register('name')}
+                                type="text"
+                                placeholder="Enter your name" />
                         </div>
 
                         <div>
                             <label className="text-sm font-medium">Driving License Number</label>
-                            <input className="input input-bordered w-full mt-1" name="license" type="text" placeholder="Enter license number" />
+                            <input className="input input-bordered w-full mt-1"
+                                name="license"
+                                type="text"
+                                {...register('license')}
+                                placeholder="Enter license number" />
                         </div>
 
                         <div>
                             <label className="text-sm font-medium">Your Email</label>
-                            <input className="input input-bordered w-full mt-1" name="email" type="email" placeholder="example@gmail.com" />
+                            <input className="input input-bordered w-full mt-1"
+                                name="email"
+                                defaultValue={user?.email}
+                                type="email"
+                                {...register('email')}
+                                placeholder="example@gmail.com" />
                         </div>
 
                         <div>
                             <label className="text-sm font-medium">Your NID</label>
-                            <input className="input input-bordered w-full mt-1" name="nid" type="text" placeholder="National ID Number" />
+                            <input className="input input-bordered w-full mt-1"
+                                name="nid"
+                                type="text"
+                                {...register('nid')}
+                                placeholder="National ID Number" />
                         </div>
 
+
+                        {/* region  set dynamically */}
+
                         <div>
-                            <label className="text-sm font-medium">Select Region</label>
-                            <select className="select select-bordered w-full mt-1" name="region">
-                                <option disabled selected>Select your Region</option>
-                                <option>Rajshahi</option>
-                                <option>Dhaka</option>
+                            <label htmlFor="region" className="block text-primary mb-2">
+                                Sender Region
+                            </label>
+                            <select
+                                id="region"
+                                {...register('region')}
+                                className="select w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
+                            >
+                                <option>Select your Region</option>
+                                {region.map((r, i) => <option key={i} value={r}>{r}</option>)}
+
                             </select>
                         </div>
 
+                        {/* district  set dynamically */}
                         <div>
-                            <label className="text-sm font-medium">Select District</label>
-                            <select className="select select-bordered w-full mt-1" name="district">
-                                <option disabled selected>Select your District</option>
-                                <option>Dhaka District</option>
-                                <option>Chattogram District</option>
+                            <label htmlFor="district" className="block text-primary mb-2">
+                                District
+                            </label>
+                            <select
+                                id="district"
+                                {...register('district')}
+                                className="select w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
+                            >
+                                <option>Select your district</option>
+                                {
+                                    districtByRegion(senderRegion).map((d, i) =>
+                                        <option key={i} value={d}>{d}</option>
+                                    )
+                                }
+
                             </select>
                         </div>
 
+
+                        {/* address */}
+                        <div>
+                            <label htmlFor="address" className="block text-primary mb-2">
+                                Address
+                            </label>
+                            <input
+                                id="address"
+                                {...register('address')}
+                                type="text"
+                                placeholder="Address"
+                                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-base-200 focus:outline-none"
+                            />
+                        </div>
                         <div>
                             <label className="text-sm font-medium">Phone Number</label>
-                            <input className="input input-bordered w-full mt-1" name="phone" type="number" placeholder="Enter phone number" />
+                            <input className="input input-bordered w-full mt-1"
+                                name="phone"
+                                type="number"
+                                {...register('phone')}
+                                placeholder="Enter phone number" />
                         </div>
 
+                        {/* vehicle model number */}
                         <div>
                             <label className="text-sm font-medium">Vehicle Brand Model & Year</label>
                             <input className="input input-bordered w-full mt-1" name="vehicleModel" type="text" placeholder="e.g., Honda Shine 2019" />
                         </div>
-
+                        {/* registration number */}
                         <div>
                             <label className="text-sm font-medium">Vehicle Registration Number</label>
                             <input className="input input-bordered w-full mt-1" name="regNum" type="text" placeholder="Enter registration no." />
                         </div>
-
+                        {/* textarea */}
                         <div className="md:col-span-2">
                             <label className="text-sm font-medium">Tell us about yourself</label>
-                            <textarea className="textarea textarea-bordered w-full mt-1" name="about" placeholder="Write something about you" rows="3"></textarea>
+                            <textarea className="textarea textarea-bordered w-full mt-1"
+                                name="about"
+                                {...register('about')}
+                                placeholder="Write something about you" rows="3"></textarea>
                         </div>
-
-                        <button className="bg-secondary text-black font-semibold py-3 rounded-lg hover:bg-green-400 transition md:col-span-2">
+                        {/* submit button */}
+                        <button type='submit' className="bg-secondary text-black font-semibold py-3 rounded-lg hover:bg-primary hover:text-base-100 transition md:col-span-2">
                             Submit
                         </button>
 
