@@ -123,7 +123,7 @@ const MyParcel = () => {
                                 parcels.map((parcel, index) => (
                                     <tr key={parcel._id} className="hover:bg-base-100 transition">
                                         <td>{index + 1}</td>
-                                        <td className="font-medium text-primary hover:text-accent "><Link to={`/dashboard/payment/${parcel._id}`}>{parcel.parcelName}</Link></td>
+                                        <td className="font-medium text-primary hover:text-accent ">{parcel.parcelName}</td>
                                         <td>৳ {parcel.cost}</td>
                                         <td>
                                             {

@@ -18,6 +18,8 @@ import PaymentCancel from '../pages/DasgBoard/Payment/PaymentCancel';
 import Services from '../pages/ServicesZap/Services';
 import PaymentHistory from '../pages/DasgBoard/PaymentHistory';
 import ApproveRider from '../pages/DasgBoard/ApproveRider';
+import RiderDetails from '../pages/DasgBoard/RiderDetails/RiderDetails';
+import UserManagement from '../pages/DasgBoard/UserManagement/UserManagement';
 
 
 
@@ -98,6 +100,14 @@ export const router = createBrowserRouter([
       {
         path: 'approve-rider',
         element: <ApproveRider></ApproveRider>
+      },
+      {
+        path: 'user-management',
+        element: <UserManagement></UserManagement>
+      },
+      {
+        path: 'rider-details/:riderId',
+        element: <RiderDetails></RiderDetails>
       },
       {
         path: 'send-parcel',

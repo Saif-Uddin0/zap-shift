@@ -10,7 +10,7 @@ import {
 } from "react-icons/fi";
 import logo from "../../assets/Logo (2).png";
 import useAuth from "../../hooks/useAuth";
-import { FaMotorcycle, FaRegCreditCard } from "react-icons/fa";
+import { FaMotorcycle, FaRegCreditCard, FaUserCheck, FaUsers } from "react-icons/fa";
 import { MdInventory2 } from "react-icons/md";
 import { PackageSearch } from "lucide-react";
 
@@ -117,15 +117,21 @@ const Dashboard = () => {
 
                         <li>
                             <NavLink to="/dashboard/approve-rider" className={linkClass}>
-                                <FaMotorcycle className="text-lg"/>
+                                < FaUserCheck className="text-lg"/>
                                 Approve Rider
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/berider"  className={linkClass}>
+                                <FaMotorcycle  className="text-lg"/>
+                                Be a Rider
                             </NavLink>
                         </li>
 
                         <li>
-                            <NavLink to="/dashboard/settings" className={linkClass}>
-                                <FiSettings />
-                                Settings
+                            <NavLink to="/dashboard/user-management" className={linkClass}>
+                                <FaUsers className="text-lg"></FaUsers>
+                                User Management
                             </NavLink>
                         </li>
                     </ul>

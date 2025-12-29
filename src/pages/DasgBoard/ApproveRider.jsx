@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FaCheckCircle, FaEye, FaTimesCircle } from "react-icons/fa";
 import Loader from "../../components/Loader/Loader";
-import { FaTrashCan } from "react-icons/fa6";
+import { FaMagnifyingGlass, FaTrashCan } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const ApproveRider = () => {
     const axiosSecure = useAxiosSecure();
@@ -35,10 +36,11 @@ const ApproveRider = () => {
             confirmButtonText: `${status}`,
         }).then((result) => {
             if (result.isConfirmed) {
-                const updatedInfo = { status: `${status}` , email:rider.email }
+                const updatedInfo = { status: status, email: rider.email }
                 axiosSecure.patch(`/riders/${rider._id}`, updatedInfo).then((res) => {
                     if (res.data.modifiedCount) {
-                        Swal.fire(`${status}!`, `Rider has been ${status}.`, "success");
+                        Swal.fire(`${status}!`,
+                            `Rider has been ${status}.`, "success");
                         refetch();
                     }
                 });
@@ -82,7 +84,7 @@ const ApproveRider = () => {
 
                     <tbody>
                         {riders.map((rider, index) => (
-                            <tr key={rider._id} className="hover:bg-gray-200">
+                            <tr key={rider._id} className="hover:bg-gray-50">
                                 <td>{index + 1}</td>
                                 <td className="font-medium">{rider.name}</td>
                                 <td>{rider.email}</td>
@@ -97,6 +99,13 @@ const ApproveRider = () => {
                                 <td className="text-center">
                                     {rider.status === "pending" ? (
                                         <div className="flex justify-center gap-3">
+                                            <Link
+                                                to={`/dashboard/rider-details/${rider._id}`}
+                                                className="btn btn-sm btn-secondary text-base-300"
+                                                title="view"
+                                            >
+                                                <FaEye />
+                                            </Link>
                                             <button
                                                 onClick={() => handleApprove(rider)}
                                                 className="btn btn-sm btn-success text-base-100"
@@ -112,15 +121,25 @@ const ApproveRider = () => {
                                             >
                                                 <FaTimesCircle />
                                             </button>
+
                                         </div>
                                     ) : (
-                                        <button
-                                            // onClick={() => handleDelete(parcel._id)}
-                                            className="btn btn-sm btn-ghost border border-gray-200 hover:bg-red-100 text-red-500"
-                                            title="Delete"
-                                        >
-                                            <FaTrashCan />Delete
-                                        </button>
+                                        <div>
+                                            <Link to={`/dashboard/rider-details/${rider._id}`}
+                                                className="btn btn-sm btn-ghost border border-gray-200 hover:bg-base-200"
+                                                title="Edit"
+                                            >
+                                                <FaMagnifyingGlass></FaMagnifyingGlass>view
+                                            </Link>
+                                            <button
+                                                // onClick={() => handleDelete(parcel._id)}
+                                                className="btn btn-sm btn-ghost border border-gray-200 hover:bg-red-100 text-red-500"
+                                                title="Delete"
+                                            >
+                                                <FaTrashCan />Delete
+                                            </button>
+                                        </div>
+
                                     )}
                                 </td>
                             </tr>

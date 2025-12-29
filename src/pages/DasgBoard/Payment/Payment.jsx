@@ -7,6 +7,7 @@ import { Link } from 'lucide-react';
 
 const Payment = () => {
     const { parcelId } = useParams();
+    
     const axiosSecure = useAxiosSecure();
 
     const { isLoading, data: parcel } = useQuery({
