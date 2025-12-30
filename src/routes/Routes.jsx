@@ -20,6 +20,7 @@ import PaymentHistory from '../pages/DasgBoard/PaymentHistory';
 import ApproveRider from '../pages/DasgBoard/ApproveRider';
 import RiderDetails from '../pages/DasgBoard/RiderDetails/RiderDetails';
 import UserManagement from '../pages/DasgBoard/UserManagement/UserManagement';
+import AdminRoutes from './AdminRoutes';
 
 
 
@@ -36,38 +37,38 @@ export const router = createBrowserRouter([
       },
       {
         path: '/about',
-        element:<AboutUs></AboutUs>
+        element: <AboutUs></AboutUs>
       },
       {
         path: '/services',
-        element:<Services></Services>
+        element: <Services></Services>
       },
       {
         path: '/berider',
-        element:<PrivateRoutes>
+        element: <PrivateRoutes>
           <BeaRider></BeaRider>
-          </PrivateRoutes>,
-          loader: () => fetch('/serviceCenter.json')
+        </PrivateRoutes>,
+        loader: () => fetch('/serviceCenter.json')
       },
       {
         path: '/coverage',
-        element:<Coverage></Coverage>,
+        element: <Coverage></Coverage>,
         loader: () => fetch('/serviceCenter.json')
       },
-      
+
     ]
   },
   {
     path: '/auth',
     errorElement: <ErrorPage></ErrorPage>,
-    children:[
+    children: [
       {
-        path:'/auth/signin',
-        element:<SignIn></SignIn>
+        path: '/auth/signin',
+        element: <SignIn></SignIn>
       },
       {
-        path:'/auth/signup',
-        element:<SignUp></SignUp>
+        path: '/auth/signup',
+        element: <SignUp></SignUp>
       },
     ]
   },
@@ -76,7 +77,7 @@ export const router = createBrowserRouter([
     element: <PrivateRoutes>
       <DashBoard></DashBoard>
     </PrivateRoutes>,
-    children:[
+    children: [
       {
         path: 'my-percels',
         element: <MyPercel></MyPercel>
@@ -99,11 +100,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'approve-rider',
-        element: <ApproveRider></ApproveRider>
+        element: <AdminRoutes><ApproveRider></ApproveRider></AdminRoutes>
       },
       {
         path: 'user-management',
-        element: <UserManagement></UserManagement>
+        element: <AdminRoutes><UserManagement></UserManagement></AdminRoutes>
       },
       {
         path: 'rider-details/:riderId',
@@ -111,7 +112,9 @@ export const router = createBrowserRouter([
       },
       {
         path: 'send-parcel',
-        element:<SendParcel></SendParcel>,
+        element: <PrivateRoutes>
+          <SendParcel></SendParcel>
+        </PrivateRoutes>,
         loader: () => fetch('/serviceCenter.json')
       },
     ]

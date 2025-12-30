@@ -13,10 +13,14 @@ import useAuth from "../../hooks/useAuth";
 import { FaMotorcycle, FaRegCreditCard, FaUserCheck, FaUsers } from "react-icons/fa";
 import { MdInventory2 } from "react-icons/md";
 import { PackageSearch } from "lucide-react";
+import useRole from "../../hooks/useRole";
 
 
 const Dashboard = () => {
-    const {  signOutUser } = useAuth();
+
+    const { role } = useRole();
+    const { signOutUser, user } = useAuth();
+
 
 
 
@@ -55,12 +59,18 @@ const Dashboard = () => {
 
                     <div className="flex items-center gap-3">
                         <div className="text-right hidden sm:block">
-                            <p className="text-sm font-medium">Saif Uddin</p>
-                            <p className="text-xs text-gray-500">Admin</p>
+                            <p className="text-sm font-medium">{user?.displayName}</p>
+                            <span
+                                className={`text-xs px-2 py-0.5 rounded-full font-medium
+    ${role === 'admin' && 'bg-green-100 text-base-300'}
+    ${role === 'rider' && 'bg-violet-300 text-base-300'}
+    ${role === 'user' && 'bg-secondary text-base-300'}
+  `}
+                            >
+                                {role? role.charAt(0).toUpperCase() + role.slice(1) : ''}
+                            </span>
                         </div>
-                        <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center font-bold text-primary">
-                            S
-                        </div>
+                        <img src={user?.photoURL} className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center font-bold text-primary" alt="" />
                     </div>
                 </div>
 
@@ -104,7 +114,7 @@ const Dashboard = () => {
                         <li>
                             <NavLink to="/dashboard/my-percels" className={linkClass}>
                                 <PackageSearch size={18} />
-                               My Parcels
+                                My Parcels
                             </NavLink>
                         </li>
 
@@ -114,26 +124,33 @@ const Dashboard = () => {
                                 Payment History
                             </NavLink>
                         </li>
-
                         <li>
-                            <NavLink to="/dashboard/approve-rider" className={linkClass}>
-                                < FaUserCheck className="text-lg"/>
-                                Approve Rider
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/berider"  className={linkClass}>
-                                <FaMotorcycle  className="text-lg"/>
+                            <NavLink to="/berider" className={linkClass}>
+                                <FaMotorcycle className="text-lg" />
                                 Be a Rider
                             </NavLink>
                         </li>
+                        {
+                            role === 'admin' &&
+                            <>
+                                <li>
+                                    <NavLink to="/dashboard/approve-rider" className={linkClass}>
+                                        < FaUserCheck className="text-lg" />
+                                        Approve Rider
+                                    </NavLink>
+                                </li>
 
-                        <li>
-                            <NavLink to="/dashboard/user-management" className={linkClass}>
-                                <FaUsers className="text-lg"></FaUsers>
-                                User Management
-                            </NavLink>
-                        </li>
+
+                                <li>
+                                    <NavLink to="/dashboard/user-management" className={linkClass}>
+                                        <FaUsers className="text-lg"></FaUsers>
+                                        User Management
+                                    </NavLink>
+                                </li>
+                            </>
+                        }
+
+
                     </ul>
 
                     {/* Logout */}

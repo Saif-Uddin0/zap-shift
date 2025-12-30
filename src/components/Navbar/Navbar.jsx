@@ -22,10 +22,11 @@ const Navbar = () => {
             <li><NavLink to="/about" className={navLinkClass}>About Us</NavLink></li>
             <li><NavLink to="/pricing" className={navLinkClass}>Pricing</NavLink></li>
             <li><NavLink to="/berider" className={navLinkClass}>Be a Rider</NavLink></li>
+            <li><NavLink to="/dashboard/send-parcel" className={navLinkClass}>Send Parcel</NavLink></li>
             
             {
                 user && <>
-                <li><NavLink to="/dashboard/send-parcel" className={navLinkClass}>Send Parcel</NavLink></li>
+                
                 <li><NavLink to="dashboard/my-percels" className={navLinkClass}>My Parcel</NavLink></li>
                 
                 </>
