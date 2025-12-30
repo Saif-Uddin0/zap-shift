@@ -202,7 +202,7 @@ const UserManagement = () => {
 
                         {/* Warning */}
                         <p className="mt-4 text-xs text-center text-gray-500">
-                            ⚠️ Role changes will affect system permissions immediately.
+                            ⚠️ Role changes will affect system permissions immediately..
                         </p>
 
                         {/* Footer */}
