@@ -124,18 +124,8 @@ const Dashboard = () => {
                                 Payment History
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink to="/dashboard/approve-rider" className={linkClass}>
-                                <FaUserCheck className="text-lg" />
-                                Approve Rider
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/dashboard/assign-rider" className={linkClass}>
-                                <FaShippingFast className="text-lg" />
-                                Assign Rider
-                            </NavLink>
-                        </li>
+                        
+                        
                         <li>
                             <NavLink to="/berider" className={linkClass}>
                                 <FaMotorcycle className="text-lg" />
@@ -160,6 +150,12 @@ const Dashboard = () => {
                                         User Management
                                     </NavLink>
                                 </li>
+                                <li>
+                            <NavLink to="/dashboard/assign-rider" className={linkClass}>
+                                <FaShippingFast className="text-lg" />
+                                Assign Rider
+                            </NavLink>
+                        </li>
                             </>
                         }
 
