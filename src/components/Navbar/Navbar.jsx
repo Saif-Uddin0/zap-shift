@@ -20,7 +20,7 @@ const Navbar = () => {
             <li><NavLink to="/services" className={navLinkClass}>Services</NavLink></li>
             <li><NavLink to="/coverage" className={navLinkClass}>Coverage</NavLink></li>
             <li><NavLink to="/about" className={navLinkClass}>About Us</NavLink></li>
-            <li><NavLink to="/pricing" className={navLinkClass}>Pricing</NavLink></li>
+            {/* <li><NavLink to="/pricing" className={navLinkClass}>Pricing</NavLink></li> */}
             <li><NavLink to="/berider" className={navLinkClass}>Be a Rider</NavLink></li>
             <li><NavLink to="/dashboard/send-parcel" className={navLinkClass}>Send Parcel</NavLink></li>
             

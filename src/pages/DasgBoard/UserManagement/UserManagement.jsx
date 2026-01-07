@@ -2,18 +2,29 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Loader from '../../../components/Loader/Loader';
 import { FaUserShield, FaUserTimes } from "react-icons/fa";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 const UserManagement = () => {
     const axiosSecure = useAxiosSecure();
     const [selectedUser, setSelectedUser] = useState(null);
+    const [searchText, setSearchText] = useState('');
+    const [searchValue, setSearchValue] = useState('');
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setSearchText(searchValue);
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchValue]);
 
 
-    const { data: users = [], isLoading, refetch } = useQuery({
-        queryKey: ['users'],
+
+    const { data: users = [], isFetching, isLoading, refetch } = useQuery({
+        queryKey: ['users', searchText],
         queryFn: async () => {
-            const res = await axiosSecure.get('/users');
+            const res = await axiosSecure.get(`/users?searchText=${searchText}`);
             return res.data;
         }
     });
@@ -65,10 +76,44 @@ const UserManagement = () => {
     if (isLoading) return <Loader />;
 
     return (
-        <div className="p-6">
-            <h1 className="text-3xl font-bold text-primary mb-6">
-                User Management ({users.length})
-            </h1>
+        <div className="p-6 space-y-6">
+
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <h1 className="text-3xl font-bold text-primary">
+                    User Management
+                    <span className="ml-2 text-sm text-gray-400">({users.length})</span>
+                </h1>
+
+                <div className="relative w-full md:w-80">
+                    <input
+                        type="text"
+                        value={searchValue}
+                        placeholder="Search by name..."
+                        className="input input-bordered w-full pl-10 focus:border-primary"
+                        onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                        <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g
+                                strokeLinejoin="round"
+                                strokeLinecap="round"
+                                strokeWidth="2.5"
+                                fill="none"
+                                stroke="currentColor"
+                            >
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.3-4.3"></path>
+                            </g>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            {isFetching && (
+                <div className="flex items-center gap-2 text-sm text-gray-400">
+                    <span className="loading loading-spinner loading-xs"></span>
+                    Searching users...
+                </div>
+            )}
 
             <div className="overflow-x-auto bg-base-100 rounded-xl shadow">
                 <table className="table w-full">
