@@ -10,7 +10,7 @@ import {
 } from "react-icons/fi";
 import logo from "../../assets/Logo (2).png";
 import useAuth from "../../hooks/useAuth";
-import { FaMotorcycle, FaRegCreditCard, FaUserCheck, FaUsers } from "react-icons/fa";
+import { FaMotorcycle, FaRegCreditCard, FaShippingFast, FaUserCheck, FaUsers } from "react-icons/fa";
 import { MdInventory2 } from "react-icons/md";
 import { PackageSearch } from "lucide-react";
 import useRole from "../../hooks/useRole";
@@ -67,7 +67,7 @@ const Dashboard = () => {
     ${role === 'user' && 'bg-secondary text-base-300'}
   `}
                             >
-                                {role? role.charAt(0).toUpperCase() + role.slice(1) : ''}
+                                {role ? role.charAt(0).toUpperCase() + role.slice(1) : ''}
                             </span>
                         </div>
                         <img src={user?.photoURL} className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center font-bold text-primary" alt="" />
@@ -125,11 +125,24 @@ const Dashboard = () => {
                             </NavLink>
                         </li>
                         <li>
+                            <NavLink to="/dashboard/approve-rider" className={linkClass}>
+                                <FaUserCheck className="text-lg" />
+                                Approve Rider
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/dashboard/assign-rider" className={linkClass}>
+                                <FaShippingFast className="text-lg" />
+                                Assign Rider
+                            </NavLink>
+                        </li>
+                        <li>
                             <NavLink to="/berider" className={linkClass}>
                                 <FaMotorcycle className="text-lg" />
                                 Be a Rider
                             </NavLink>
                         </li>
+
                         {
                             role === 'admin' &&
                             <>

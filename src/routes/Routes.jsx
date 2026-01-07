@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { createBrowserRouter } from "react-router-dom";
 import ErrorPage from '../pages/Error/ErrorPage';
 import Home from '../pages/Home/Home';
@@ -21,6 +21,7 @@ import ApproveRider from '../pages/DasgBoard/ApproveRider';
 import RiderDetails from '../pages/DasgBoard/RiderDetails/RiderDetails';
 import UserManagement from '../pages/DasgBoard/UserManagement/UserManagement';
 import AdminRoutes from './AdminRoutes';
+import AssignRider from '../pages/DasgBoard/AssignRider';
 
 
 
@@ -101,6 +102,10 @@ export const router = createBrowserRouter([
       {
         path: 'approve-rider',
         element: <AdminRoutes><ApproveRider></ApproveRider></AdminRoutes>
+      },
+      {
+        path: 'assign-rider',
+        element: <AssignRider></AssignRider>
       },
       {
         path: 'user-management',
