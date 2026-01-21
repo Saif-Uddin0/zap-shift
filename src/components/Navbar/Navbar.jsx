@@ -16,7 +16,7 @@ const Navbar = () => {
 
     const links = (
         <>
-            
+            <li><NavLink to="/" className={navLinkClass}>Home</NavLink></li>
             <li><NavLink to="/services" className={navLinkClass}>Services</NavLink></li>
             <li><NavLink to="/coverage" className={navLinkClass}>Coverage</NavLink></li>
             <li><NavLink to="/about" className={navLinkClass}>About Us</NavLink></li>
